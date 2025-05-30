@@ -1,4 +1,4 @@
-# nginx proxy address - http://172.17.0.1:8090
+# nginx proxy address - http://172.17.0.1:61918
 
 name: beszel
 x-logging: &default-logging
@@ -20,7 +20,7 @@ services:
       HOSTNAME: ${BASE_HOST_NAME:-$HOSTNAME}
       APP_URL: https://${BASE_HOST_NAME:-$HOSTNAME}
     ports:
-      - '8090:8090'
+      - '172.17.0.1:61918:8090'
     volumes:
       - '/var/lib/srv/${USER}/docker/beszel/rootfs/data/beszel:/beszel_data'
       - '/var/lib/srv/${USER}/docker/beszel/rootfs/data/socket:/beszel_socket'
