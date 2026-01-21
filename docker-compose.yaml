@@ -1,0 +1,33 @@
+# nginx proxy address - http://172.17.0.1:61918
+
+name: beszel
+x-logging: &default-logging
+  options:
+    max-size: '5m'
+    max-file: '1'
+  driver: json-file
+
+services:
+  app:
+    image: henrygd/beszel:latest
+    container_name: beszel-app
+    hostname: ${BASE_HOST_NAME:-$HOSTNAME}
+    restart: always
+    pull_policy: always
+    logging: *default-logging
+    environment:
+      TZ: ${TZ:-America/New_York}
+      HOSTNAME: ${BASE_HOST_NAME:-$HOSTNAME}
+      APP_URL: https://${BASE_HOST_NAME:-$HOSTNAME}
+    ports:
+      - '172.17.0.1:61918:8090'
+    volumes:
+      - './rootfs/data/beszel:/beszel_data'
+      - './rootfs/data/socket:/beszel_socket'
+    networks:
+      - beszel
+
+networks:
+  beszel:
+    name: beszel
+    external: false
