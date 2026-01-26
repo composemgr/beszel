@@ -1,31 +1,31 @@
 ## 👋 Welcome to beszel 🚀
 
-Beszel - Lightweight server monitoring platform
+Lightweight server monitoring and alerting platform
 
 ## 📋 Description
 
-Beszel is a lightweight server monitoring platform with a web interface for tracking system metrics, uptime, and performance across multiple servers.
+Lightweight server monitoring and alerting platform
 
 ## 🚀 Services
 
-- **server**: Beszel monitoring server (`henrygd/beszel:latest`)
+- **app**: henrygd/beszel:latest
 
 ## 📦 Installation
 
-### Using curl
-```shell
-curl -q -LSsf "https://raw.githubusercontent.com/composemgr/beszel/main/docker-compose.yaml" | docker compose -f - up -d
+### Option 1: Quick Install
+```bash
+curl -q -LSsf "https://raw.githubusercontent.com/composemgr/beszel/main/docker-compose.yaml" -o compose.yml
 ```
 
-### Using git
-```shell
+### Option 2: Git Clone
+```bash
 git clone "https://github.com/composemgr/beszel" ~/.local/srv/docker/beszel
 cd ~/.local/srv/docker/beszel
 docker compose up -d
 ```
 
-### Using composemgr
-```shell
+### Option 3: Using composemgr
+```bash
 composemgr install beszel
 ```
 
@@ -35,29 +35,42 @@ composemgr install beszel
 
 ```shell
 TZ=America/New_York
-BASE_HOST_NAME=${HOSTNAME}
 ```
+
+See `docker-compose.yaml` for complete list of configurable options.
 
 ## 🌐 Access
 
-- **Web Interface**: http://172.17.0.1:60047
+- **Web Interface**: http://172.17.0.1:61918
 
 ## 📂 Volumes
 
-- `./rootfs/data/beszel` - Application data and metrics
+- `./rootfs/data/beszel` - Data storage
+- `./rootfs/data/socket` - Data storage
 
 ## 🔍 Logging
 
 ```shell
-docker compose logs -f server
+docker compose logs -f app
 ```
 
 ## 🛠️ Management
 
-```shell
+```bash
+# Start services
 docker compose up -d
+
+# Stop services
 docker compose down
+
+# Update to latest images
 docker compose pull && docker compose up -d
+
+# View logs
+docker compose logs -f
+
+# Restart services
+docker compose restart
 ```
 
 ## 📋 Requirements
