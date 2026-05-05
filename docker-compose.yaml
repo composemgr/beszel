@@ -22,8 +22,8 @@ services:
     ports:
       - '172.17.0.1:61918:8090'
     volumes:
-      - './rootfs/data/beszel:/beszel_data'
-      - './rootfs/data/socket:/beszel_socket'
+      - './volumes/data/beszel:/beszel_data'
+      - './volumes/data/socket:/beszel_socket'
     networks:
       - beszel
 
