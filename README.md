@@ -45,8 +45,8 @@ See `docker-compose.yaml` for complete list of configurable options.
 
 ## 📂 Volumes
 
-- `./rootfs/data/beszel` - Data storage
-- `./rootfs/data/socket` - Data storage
+- `./volumes/data/beszel` - Data storage
+- `./volumes/data/socket` - Data storage
 
 ## 🔍 Logging
 
