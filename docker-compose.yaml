@@ -19,12 +19,10 @@ services:
       TZ: ${TZ:-America/New_York}
       CONTAINER_NAME: beszel-app
       HOSTNAME: ${BASE_HOST_NAME:-$HOSTNAME}
-      APP_URL: https://${BASE_HOST_NAME:-$HOSTNAME}
     ports:
       - '172.17.0.1:61918:8090'
     volumes:
       - './volumes/data/beszel:/beszel_data'
-      - './volumes/data/socket:/beszel_socket'
     labels:
       - 'traefik.enable=true'
       - 'cloudflare.enable=true'
