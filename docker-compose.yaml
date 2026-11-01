@@ -1,4 +1,4 @@
-# nginx proxy address - http://172.17.0.1:61918
+# nginx proxy address - http://172.17.0.1:64119
 
 name: beszel
 x-logging: &default-logging
@@ -19,36 +19,15 @@ services:
       TZ: ${TZ:-America/New_York}
       CONTAINER_NAME: beszel-app
       HOSTNAME: ${BASE_HOST_NAME:-$HOSTNAME}
+      APP_URL: https://${BASE_HOST_NAME:-$HOSTNAME}
     ports:
-      - '172.17.0.1:61918:8090'
+      - '172.17.0.1:64119:8090'
     volumes:
       - './volumes/data/beszel:/beszel_data'
-    labels:
-      - 'traefik.enable=true'
-      - 'cloudflare.enable=true'
-      - 'traefik.docker.network=proxy'
-      - 'cloudflare.service=http://beszel-app:8090'
-      - 'cloudflare.hostname=beszel.${CLOUDFLARE_ZONE_NAME:-}'
-      - 'traefik.http.routers.beszel-app.entrypoints=http'
-      - 'traefik.http.routers.beszel-app-secure.tls=true'
-      - 'traefik.http.routers.beszel-app.rule=Host($(${BASE_HOST_NAME:-$HOSTNAME}))'
-      - 'traefik.http.middlewares.beszel-app-https-redirect.redirectscheme.scheme=https'
-      - 'traefik.http.routers.beszel-app.middlewares=beszel-app-https-redirect'
-      - 'traefik.http.routers.beszel-app-secure.entrypoints=https'
-      - 'traefik.http.routers.beszel-app-secure.rule=Host($(${BASE_HOST_NAME:-$HOSTNAME}))'
-      - 'traefik.http.routers.beszel-app-secure.tls.certresolver=cloudflare'
-      - 'traefik.http.routers.beszel-app-secure.service=beszel-app'
-      - 'traefik.http.services.beszel-app.loadbalancer.server.port=8090'
     networks:
       - beszel
-      - proxy
-      - cloudflare
 
 networks:
   beszel:
     name: beszel
     external: false
-  proxy:
-    external: true
-  cloudflare:
-    external: true

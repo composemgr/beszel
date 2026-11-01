@@ -1,0 +1,44 @@
+name: beszel
+x-logging: &default-logging
+  options:
+    max-size: '5m'
+    max-file: '1'
+  driver: json-file
+
+services:
+  app:
+    image: henrygd/beszel:latest
+    container_name: beszel-app
+    hostname: ${BASE_HOST_NAME:-$HOSTNAME}
+    restart: always
+    pull_policy: always
+    logging: *default-logging
+    environment:
+      TZ: ${TZ:-America/New_York}
+      CONTAINER_NAME: beszel-app
+      HOSTNAME: ${BASE_HOST_NAME:-$HOSTNAME}
+      APP_URL: https://${BASE_HOST_NAME:-$HOSTNAME}
+    volumes:
+      - './volumes/data/beszel:/beszel_data'
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=traefik'
+      - 'traefik.http.routers.beszel-app.entrypoints=http'
+      - 'traefik.http.routers.beszel-app.rule=Host(`${BASE_HOST_NAME:-$HOSTNAME}`)'
+      - 'traefik.http.routers.beszel-app.middlewares=beszel-app-https-redirect'
+      - 'traefik.http.middlewares.beszel-app-https-redirect.redirectscheme.scheme=https'
+      - 'traefik.http.routers.beszel-app-secure.entrypoints=https'
+      - 'traefik.http.routers.beszel-app-secure.rule=Host(`${BASE_HOST_NAME:-$HOSTNAME}`)'
+      - 'traefik.http.routers.beszel-app-secure.tls.certresolver=cloudflare'
+      - 'traefik.http.routers.beszel-app-secure.service=beszel-app'
+      - 'traefik.http.services.beszel-app.loadbalancer.server.port=8090'
+    networks:
+      - beszel
+      - traefik
+
+networks:
+  beszel:
+    name: beszel
+    external: false
+  traefik:
+    external: true
