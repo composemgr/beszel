@@ -18,6 +18,12 @@ services:
       CONTAINER_NAME: beszel-app
       HOSTNAME: ${BASE_HOST_NAME:-$HOSTNAME}
       APP_URL: https://${BASE_HOST_NAME:-$HOSTNAME}
+    healthcheck:
+      test: ['CMD', '/beszel', 'health', '--url', 'http://localhost:8090']
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
     volumes:
       - './volumes/data/beszel:/beszel_data'
     labels:
